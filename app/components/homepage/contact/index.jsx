@@ -9,6 +9,7 @@ import { IoLogoGithub, IoMdCall } from "react-icons/io";
 import { MdAlternateEmail } from "react-icons/md";
 import ContactWithCaptcha from './contact-with-captcha';
 import ContactWithoutCaptcha from './contact-without-captcha';
+import { IoLogoWhatsapp, IoIosMail   } from "react-icons/io";
 
 function ContactSection() {
   return (
@@ -72,14 +73,14 @@ function ContactSection() {
                 size={48}
               />
             </Link>
-            <Link target="_blank" href={personalData.stackOverflow}>
-              <FaStackOverflow
+            <Link target="_blank" href={personalData.whatsapp}>
+              <IoLogoWhatsapp
                 className="bg-[#8b98a5] p-3 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
                 size={48}
               />
             </Link>
-            <Link target="_blank" href={personalData.facebook}>
-              <FaFacebook
+            <Link target="_blank" href={personalData.email}>
+              <IoIosMail
                 className="bg-[#8b98a5] p-3 rounded-full hover:bg-[#16f2b3] hover:scale-110 transition-all duration-300 text-gray-800 cursor-pointer"
                 size={48}
               />
