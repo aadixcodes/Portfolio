@@ -48,8 +48,8 @@ function BlogCard({ blog }) {
         <Image
           src={blog.image}
           alt={blog.name}
-          layout="fill"
-          objectFit="cover"
+          height={1080}
+          width={1920}
           className='group-hover:scale-110 transition-all duration-300'
         />
       </div>
