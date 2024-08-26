@@ -1,9 +1,9 @@
-import abhyudaya from 'image/abhyudaya.JPG';
-import imc from '/image/imc.JPG';
-import navgo from '/image/navgo.JPG';
-import svvvinvento from '/image/svvvinvento.JPG';
-import uniprep from '/image/uniprep.JPG';
-import votesphere from '/image/votesphere.JPG';
+import abhyudaya from '../../public/image/abhyudaya.JPG';
+import imc from '../../public/image/imc.JPG';
+import navgo from '../../public/image/navgo.JPG';
+import svvvinvento from '../../public/image/svvvinvento.JPG';
+import uniprep from '../../public/image/uniprep.JPG';
+import votesphere from '../../public/image/votesphere.JPG';
 
 export const blogData = [
     {
