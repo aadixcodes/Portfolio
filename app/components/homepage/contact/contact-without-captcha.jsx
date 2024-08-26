@@ -1,55 +1,200 @@
+// "use client";
+// // @flow strict
+// import { isValidEmail } from '@/utils/check-email';
+// import axios from 'axios';
+// import { useState } from 'react';
+// import { TbMailForward } from "react-icons/tb";
+// import { toast } from 'react-toastify';
+
+// function ContactWithoutCaptcha() {
+//   const [error, setError] = useState({ email: false, required: false });
+//   const [userInput, setUserInput] = useState({
+//     name: '',
+//     email: '',
+//     message: '',
+//   });
+
+//   const checkRequired = () => {
+//     if (userInput.email && userInput.message && userInput.name) {
+//       setError({ ...error, required: false });
+//     }
+//   };
+
+//   const handleSendMail = async (e) => {
+//     e.preventDefault();
+//     if (!userInput.email || !userInput.message || !userInput.name) {
+//       setError({ ...error, required: true });
+//       return;
+//     } else if (error.email) {
+//       return;
+//     } else {
+//       setError({ ...error, required: false });
+//     };
+
+//     const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+//     const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+//     const options = { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY };
+
+//     try {
+//       const res = await emailjs.send(serviceID, templateID, userInput, options);
+//       const teleRes = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/contact`, userInput);
+
+//       if (res.status === 200 || teleRes.status === 200) {
+//         toast.success('Message sent successfully!');
+//         setUserInput({
+//           name: '',
+//           email: '',
+//           message: '',
+//         });
+//       };
+//     } catch (error) {
+//       toast.error(error?.text || error);
+//     };
+//   };
+
+//   return (
+//     <div className="">
+//       <p className="font-medium mb-5 text-[#16f2b3] text-xl uppercase">
+//         Contact with me
+//       </p>
+//       <div className="max-w-3xl text-white rounded-lg border border-[#464c6a] p-3 lg:p-5">
+//         <p className="text-sm text-[#d3d8e8]">
+//           {"If you have any questions or concerns, please don't hesitate to contact me. I am open to any work opportunities that align with my skills and interests."}
+//         </p>
+//         <div className="mt-6 flex flex-col gap-4">
+//           <div className="flex flex-col gap-2">
+//             <label className="text-base">Your Name: </label>
+//             <input
+//               className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
+//               type="text"
+//               maxLength="100"
+//               required={true}
+//               onChange={(e) => setUserInput({ ...userInput, name: e.target.value })}
+//               onBlur={checkRequired}
+//               value={userInput.name}
+//             />
+//           </div>
+
+//           <div className="flex flex-col gap-2">
+//             <label className="text-base">Your Email: </label>
+//             <input
+//               className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
+//               type="email"
+//               maxLength="100"
+//               required={true}
+//               value={userInput.email}
+//               onChange={(e) => setUserInput({ ...userInput, email: e.target.value })}
+//               onBlur={() => {
+//                 checkRequired();
+//                 setError({ ...error, email: !isValidEmail(userInput.email) });
+//               }}
+//             />
+//             {error.email &&
+//               <p className="text-sm text-red-400">Please provide a valid email!</p>
+//             }
+//           </div>
+
+//           <div className="flex flex-col gap-2">
+//             <label className="text-base">Your Message: </label>
+//             <textarea
+//               className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
+//               maxLength="500"
+//               name="message"
+//               required={true}
+//               onChange={(e) => setUserInput({ ...userInput, message: e.target.value })}
+//               onBlur={checkRequired}
+//               rows="4"
+//               value={userInput.message}
+//             />
+//           </div>
+//           <div className="flex flex-col items-center gap-2">
+//             {error.required &&
+//               <p className="text-sm text-red-400">
+//                 Email and Message are required!
+//               </p>
+//             }
+//             <button
+//               className="flex items-center gap-1 hover:gap-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 px-5 md:px-12 py-2.5 md:py-3 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-white no-underline transition-all duration-200 ease-out hover:text-white hover:no-underline md:font-semibold"
+//               role="button"
+//               onClick={handleSendMail}
+//             >
+//               <span>Send Message</span>
+//               <TbMailForward className="mt-1" size={18} />
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ContactWithoutCaptcha;
+
 "use client";
 // @flow strict
-import { isValidEmail } from '@/utils/check-email';
-import axios from 'axios';
-import { useState } from 'react';
+import { isValidEmail } from "@/utils/check-email";
+import axios from "axios";
+import { useState } from "react";
 import { TbMailForward } from "react-icons/tb";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 function ContactWithoutCaptcha() {
-  const [error, setError] = useState({ email: false, required: false });
-  const [userInput, setUserInput] = useState({
-    name: '',
-    email: '',
-    message: '',
+  const [formData, setFormData] = useState({
+    Name: "",
+    Email: "",
+    Message: "",
   });
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  const checkRequired = () => {
-    if (userInput.email && userInput.message && userInput.name) {
-      setError({ ...error, required: false });
-    }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSendMail = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userInput.email || !userInput.message || !userInput.name) {
-      setError({ ...error, required: true });
-      return;
-    } else if (error.email) {
-      return;
-    } else {
-      setError({ ...error, required: false });
-    };
 
-    const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-    const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const options = { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY };
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "Form submitted successfully!",
+      background: '#1b203e', // Dark blue background matching your site
+      color: '#ffffff', // White text
+      iconColor: '#16f2b3', // Teal color for the success icon
+      confirmButtonColor: '#B541C1', // Pink color for the button
+      confirmButtonText: 'OK',
+      border: 'fff',
+      customClass: {
+        popup: 'custom-popup-class',
+        confirmButton: 'custom-confirm-button-class'
+      }
+    });
 
+    console.log("Form submitted:", formData);
+    const data = new FormData();
+    data.append("Name", formData.Name);
+    data.append("Email", formData.Email);
+    data.append("Message", formData.Message);
+
+    const Sheet_Url =
+      "https://script.google.com/macros/s/AKfycbwD-2lRTZMxjq4xBKNZKA8C1GOJdeTl9I585jWbP4I7XNzs7g_RYUazbMYMtV74CBg_2Q/exec";
     try {
-      const res = await emailjs.send(serviceID, templateID, userInput, options);
-      const teleRes = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/contact`, userInput);
+      await fetch(Sheet_Url, {
+        method: "POST",
+        body: data,
+        muteHttpExceptions: true,
+      });
 
-      if (res.status === 200 || teleRes.status === 200) {
-        toast.success('Message sent successfully!');
-        setUserInput({
-          name: '',
-          email: '',
-          message: '',
-        });
-      };
+      setFormData({
+        Name: "",
+        Email: "",
+        Message: "",
+      });
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 3000); // Hide message after 3 seconds
     } catch (error) {
-      toast.error(error?.text || error);
-    };
+      console.log(error);
+    }
   };
 
   return (
@@ -59,9 +204,12 @@ function ContactWithoutCaptcha() {
       </p>
       <div className="max-w-3xl text-white rounded-lg border border-[#464c6a] p-3 lg:p-5">
         <p className="text-sm text-[#d3d8e8]">
-          {"If you have any questions or concerns, please don't hesitate to contact me. I am open to any work opportunities that align with my skills and interests."}
+          {
+            "If you have any questions or concerns, please don't hesitate to contact me. I am open to any work opportunities that align with my skills and interests."
+          }
         </p>
         <div className="mt-6 flex flex-col gap-4">
+          <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2">
             <label className="text-base">Your Name: </label>
             <input
@@ -69,9 +217,9 @@ function ContactWithoutCaptcha() {
               type="text"
               maxLength="100"
               required={true}
-              onChange={(e) => setUserInput({ ...userInput, name: e.target.value })}
-              onBlur={checkRequired}
-              value={userInput.name}
+              name="Name"
+              onChange={handleChange}
+              value={formData.Name}                
             />
           </div>
 
@@ -80,18 +228,21 @@ function ContactWithoutCaptcha() {
             <input
               className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
               type="email"
+              name="Email"
               maxLength="100"
               required={true}
-              value={userInput.email}
-              onChange={(e) => setUserInput({ ...userInput, email: e.target.value })}
-              onBlur={() => {
-                checkRequired();
-                setError({ ...error, email: !isValidEmail(userInput.email) });
-              }}
+              value={formData.Email}
+              onChange={handleChange}
+              // onBlur={() => {
+              //   checkRequired();
+              //   setError({ ...error, email: !isValidEmail(userInput.email) });
+              // }}
             />
-            {error.email &&
-              <p className="text-sm text-red-400">Please provide a valid email!</p>
-            }
+            {/* {error.email && (
+              <p className="text-sm text-red-400">
+                Please provide a valid email!
+              </p>
+            )} */}
           </div>
 
           <div className="flex flex-col gap-2">
@@ -99,33 +250,32 @@ function ContactWithoutCaptcha() {
             <textarea
               className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
               maxLength="500"
-              name="message"
+             name="Message"
               required={true}
-              onChange={(e) => setUserInput({ ...userInput, message: e.target.value })}
-              onBlur={checkRequired}
+              onChange={handleChange}
               rows="4"
-              value={userInput.message}
+              value={formData.Message}
             />
           </div>
           <div className="flex flex-col items-center gap-2">
-            {error.required &&
+            {/* {error.required && (
               <p className="text-sm text-red-400">
                 Email and Message are required!
               </p>
-            }
+            )} */}
             <button
-              className="flex items-center gap-1 hover:gap-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 px-5 md:px-12 py-2.5 md:py-3 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-white no-underline transition-all duration-200 ease-out hover:text-white hover:no-underline md:font-semibold"
-              role="button"
-              onClick={handleSendMail}
+              className="flex items-center gap-1 mt-[20px] hover:gap-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 px-5 md:px-12 py-2.5 md:py-3 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-white no-underline transition-all duration-200 ease-out hover:text-white hover:no-underline md:font-semibold"
+              type="submit"
             >
               <span>Send Message</span>
               <TbMailForward className="mt-1" size={18} />
             </button>
           </div>
+          </form>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default ContactWithoutCaptcha;
