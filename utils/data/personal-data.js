@@ -1,6 +1,6 @@
 export const personalData = {
   name: "Aditya Patel",
-  profile: '/profile.jpg',
+  profile: '/profileimg.jpg',
   designation: "MERN Stack Developer",
   description: "My name is Aditya Patel. I am a passionate and innovative MERN stack developer with a deep love for programming. As a quick learner with a self-motivated attitude, I am always eager to explore new technologies and solve challenging problems. My primary expertise lies in JavaScript, and I enjoy working across various stacks of web application development. I am dedicated to making the web more accessible and open to everyone. I am open to any job opportunities that align with my skills and interests.",
   email: 'developer.aditya09@gmail.com',
